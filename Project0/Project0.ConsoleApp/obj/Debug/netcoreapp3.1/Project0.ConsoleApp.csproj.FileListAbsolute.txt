@@ -1,0 +1,13 @@
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.exe
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.deps.json
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.runtimeconfig.json
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.runtimeconfig.dev.json
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.dll
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\bin\Debug\netcoreapp3.1\Project0.ConsoleApp.pdb
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.csprojAssemblyReference.cache
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.AssemblyInfoInputs.cache
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.AssemblyInfo.cs
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.dll
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.pdb
+C:\Revature\Joseph-project0\Project0\Project0.ConsoleApp\obj\Debug\netcoreapp3.1\Project0.ConsoleApp.genruntimeconfig.cache
