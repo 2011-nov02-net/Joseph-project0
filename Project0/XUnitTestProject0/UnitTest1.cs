@@ -21,7 +21,7 @@ namespace XUnitTestProject0
                 ICollection<Product> testInventory;
 
                 Store testStore = new Store(testInventory, "123 Fake Street", "77840");
-
+                testStore.AddItem(itemName, quantity);
             }
         }
     }

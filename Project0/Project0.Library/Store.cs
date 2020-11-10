@@ -91,20 +91,22 @@ namespace Project0.Library
         }
         public void Restock(Order restockOrder)
         {
-            foreach (Product inventoryItem in this._inventory)
+            foreach (Product orderItem in restockOrder.Selections)
             {
-                bool carryItem = restockOrder.Selections.Exists(x => x.Name == inventoryItem.Name);
+                bool carryItem = this._inventory.Exists(x => x.Name == orderItem.Name);
+                //if item is carried by the store, restock it with the order quantity
+                //else add item to the list of items carried by the store
                 if (carryItem)
                 {
-                    Product orderSelection = restockOrder.Selections.Find(x => x.Name == inventoryItem.Name);
-                    inventoryItem.Quantity += orderSelection.Quantity;
+                    Product restockSelection = this._inventory.Find(x => x.Name == orderItem.Name);
+                    restockSelection.Quantity += orderItem.Quantity;
                 }
                 else
                 {
-                    Product orderSelection = restockOrder.Selections.Find(x => x.Name == inventoryItem.Name);
-                    AddItem(orderSelection.Name, orderSelection.Quantity);
+                    AddItem(orderItem.Name, orderItem.Quantity);
                 }
             }
+
         }
     }
 }
