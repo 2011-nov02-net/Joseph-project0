@@ -26,7 +26,8 @@ namespace Project0.Library
 
         public void AddCustomer(Customer customer)
         {
-            _customers.Add(customer);
+            if (!this._customers.Contains(customer))
+                _customers.Add(customer);
         }
 
         public void RemoveCustomer(Customer customer)
@@ -43,7 +44,7 @@ namespace Project0.Library
             //TODO: ensure duplicates are not added
             if( quantity >= 10000)
                 throw new InvalidOperationException($"{quantity} is too large a quantity.");
-            else if (quantity < 0)
+            else if (quantity < 1)
                 throw new InvalidOperationException($"{quantity} is not a valid quantity.");
             else 
             {
@@ -56,31 +57,54 @@ namespace Project0.Library
             var product = _inventory.First(x => x.Name.Equals(itemName));
             _inventory.Remove(product);
         }
+
         //returns true if order can be met
-        public bool FillOrder(Order order)
+        public List<bool> FillOrder(Order order)
         {
             //add new customer to customer list
-            if (!this._customers.Contains(order.Orderer))
-                _customers.Add(order.Orderer);
+            AddCustomer(order.Orderer);
+            List<bool> orderResults = new List<bool>();
 
-            foreach(Product item in this._inventory)
+            foreach (Product inventoryItem in this._inventory)
             {
-                //TODO: add message for failure to fill, and finish logic for finding 
-                if (order.Selections.Contains(itemName) && item.InStock)
+                bool carryItem = order.Selections.Exists(x => x.Name == inventoryItem.Name);
+            
+                //TODO: add reason for failure to fill
+                if ( carryItem && inventoryItem.InStock)
                 {
-                    
-                   
+                    Product orderSelection = order.Selections.Find(x => x.Name == inventoryItem.Name);
+                    if (orderSelection.Quantity > inventoryItem.Quantity)
+                        orderResults.Add(false);
+                    else
+                    {
+                        inventoryItem.Quantity -= orderSelection.Quantity;
+                        //TODO: add check for InStock, after filling order
+                        orderResults.Add(true);
+                    }
                 }
                 else
                 {
-                    return false;
+                    orderResults.Add(false);
                 }
             }
-            return true;
+            return orderResults;
         }
         public void Restock(Order restockOrder)
         {
-
+            foreach (Product inventoryItem in this._inventory)
+            {
+                bool carryItem = restockOrder.Selections.Exists(x => x.Name == inventoryItem.Name);
+                if (carryItem)
+                {
+                    Product orderSelection = restockOrder.Selections.Find(x => x.Name == inventoryItem.Name);
+                    inventoryItem.Quantity += orderSelection.Quantity;
+                }
+                else
+                {
+                    Product orderSelection = restockOrder.Selections.Find(x => x.Name == inventoryItem.Name);
+                    AddItem(orderSelection.Name, orderSelection.Quantity);
+                }
+            }
         }
     }
 }
