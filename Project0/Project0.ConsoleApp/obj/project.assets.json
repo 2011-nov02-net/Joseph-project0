@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "Project0.Library/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Project0.Library.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Project0.Library.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Project0.Library/1.0.0": {
+      "type": "project",
+      "path": "../Project0.Library/Project0.Library.csproj",
+      "msbuildProject": "../Project0.Library/Project0.Library.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "Project0.Library >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\JPX\\.nuget\\packages\\": {}
@@ -32,7 +51,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Revature\\Joseph-project0\\Project0\\Project0.Library\\Project0.Library.csproj": {
+              "projectPath": "C:\\Revature\\Joseph-project0\\Project0\\Project0.Library\\Project0.Library.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Project0.Library
 {
-    class Product
+    public class Product
     {
         public bool InStock { get; set; }
+        public string Name { get; }
 
         private int _quantity;
         public int Quantity
@@ -25,9 +26,8 @@ namespace Project0.Library
                 }
             }
         }
-        public string Name { get;}
 
-        //check for valid quantity when calling constructor
+        //TODO:check for valid quantity when calling constructor
         public Product(string name, int initialQuantity)
         {
             this.Name = name;
