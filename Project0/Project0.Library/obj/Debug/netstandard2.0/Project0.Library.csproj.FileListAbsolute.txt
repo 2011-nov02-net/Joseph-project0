@@ -1,9 +1,0 @@
-C:\Revature\Joseph-project0\Project0\Project0.Library\bin\Debug\netstandard2.0\Project0.Library.deps.json
-C:\Revature\Joseph-project0\Project0\Project0.Library\bin\Debug\netstandard2.0\Project0.Library.dll
-C:\Revature\Joseph-project0\Project0\Project0.Library\bin\Debug\netstandard2.0\Project0.Library.pdb
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.csprojAssemblyReference.cache
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.AssemblyInfoInputs.cache
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.AssemblyInfo.cs
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.csproj.CoreCompileInputs.cache
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.dll
-C:\Revature\Joseph-project0\Project0\Project0.Library\obj\Debug\netstandard2.0\Project0.Library.pdb
