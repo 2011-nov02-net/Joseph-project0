@@ -10,8 +10,8 @@ namespace XUnitTestProject0
     public class UnitTest1
     {
         
-        public void StoreAddItemTest()
-        {
+        //public void StoreAddItemTest()
+       // {
             [Fact]
             [InlineData("bananas", 10)]
             [InlineData("bananananas", 0 )]
@@ -23,6 +23,6 @@ namespace XUnitTestProject0
                 Store testStore = new Store(testInventory, "123 Fake Street", "77840");
                 testStore.AddItem(itemName, quantity);
             }
-        }
+      //  }
     }
 }

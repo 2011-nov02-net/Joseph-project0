@@ -58,7 +58,7 @@ namespace Project0.Library
             _inventory.Remove(product);
         }
 
-        //returns true if order can be met
+        //returns a list of bools, each item indicates whether the order was met 
         public List<bool> FillOrder(Order order)
         {
             //add new customer to customer list
