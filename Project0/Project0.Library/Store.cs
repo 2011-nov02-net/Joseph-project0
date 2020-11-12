@@ -8,6 +8,13 @@ using System.Text;
 
 namespace Project0.Library
 {
+    /// <summary>
+    /// Store has feilds to track it's location, customer list(customers) and inventory list(product)
+    /// </summary>
+    /// <remarks>
+    /// Store handles the majority of the business logic, with the other classes primarily used to 
+    /// provide data to be handled by store methods
+    /// </remarks>
     public class Store
     {
         public string Address { get;}
@@ -24,21 +31,34 @@ namespace Project0.Library
 
         }
 
+        /// <summary>
+        /// Adds a customer to the store's customer list
+        /// </summary>
         public void AddCustomer(Customer customer)
         {
             if (!this._customers.Contains(customer))
                 _customers.Add(customer);
         }
 
+        /// <summary>
+        /// removes a customer from the store's customer list
+        /// </summary>
         public void RemoveCustomer(Customer customer)
         {
             _customers.Remove(customer);
         }
+        /// <summary>
+        /// outputs the list of product names, with their quantity at the targeted store
+        /// </summary>
         public void PrintInventory()
         {
-            //TODO
+            //may be better to move to Program.cs
+
         }
 
+        /// <summary>
+        /// Adds an item to the store's inventory list
+        /// </summary>
         public void AddItem(string itemName, int quantity)
         {
             //TODO: ensure duplicates are not added
@@ -52,19 +72,26 @@ namespace Project0.Library
             }
         }
 
+        /// <summary>
+        /// removes an item from the inventory list
+        /// </summary>
         public void RemoveItem(string itemName)
         {
             var product = _inventory.First(x => x.Name.Equals(itemName));
             _inventory.Remove(product);
         }
 
-        //returns a list of bools, each item indicates whether the order was met 
+        /// <summary>
+        ///returns a list of bools, each item indicates whether the order was met 
+        ///lowers product quantity to reflect filled order, but does not remove 
+        ///products from inventory list
+        /// </summary>
         public List<bool> FillOrder(Order order)
         {
             //add new customer to customer list
             AddCustomer(order.Orderer);
             List<bool> orderResults = new List<bool>();
-
+            
             foreach (Product inventoryItem in this._inventory)
             {
                 bool carryItem = order.Selections.Exists(x => x.Name == inventoryItem.Name);
@@ -89,6 +116,11 @@ namespace Project0.Library
             }
             return orderResults;
         }
+        /// <summary>
+        /// if the product is in the inventory list, adds quantity
+        /// if not, product is added to inventory with initial quantity
+        /// from restock
+        /// </summary>
         public void Restock(Order restockOrder)
         {
             foreach (Product orderItem in restockOrder.Selections)

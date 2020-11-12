@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Project0.Library
 {
+    /// <summary>
+    ///  Provides data fields representing a particular product
+    /// </summary>
     public class Product
     {
         public bool InStock { get; set; }

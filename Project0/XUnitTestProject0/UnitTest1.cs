@@ -9,20 +9,18 @@ namespace XUnitTestProject0
 {
     public class UnitTest1
     {
-        
-        //public void StoreAddItemTest()
-       // {
-            [Fact]
-            [InlineData("bananas", 10)]
-            [InlineData("bananananas", 0 )]
-            [InlineData("", 1000)]
-            public void StoreAddItemTest(string itemName, int quantity)
-            {
-                ICollection<Product> testInventory;
+    
+        [Theory]
+        [InlineData("bananas", 10)]
+        [InlineData("bananananas", 0 )]
+        [InlineData("", 1000)]
+        public void StoreAddItemTest(string itemName, int quantity)
+        {
+            List<Product> testInventory = new List<Product>();
 
-                Store testStore = new Store(testInventory, "123 Fake Street", "77840");
-                testStore.AddItem(itemName, quantity);
-            }
-      //  }
+            Store testStore = new Store(testInventory, "123 Fake Street", "77840");
+            testStore.AddItem(itemName, quantity);
+        }
+  
     }
 }

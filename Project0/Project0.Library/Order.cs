@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Project0.Library
 {
+    /// <summary>
+    /// Provides data fields representing an order in
+    /// the form of a list of Products
+    /// </summary>
     public class Order
     {
        // public Store TargetStore { get; set;  }
@@ -16,6 +20,17 @@ namespace Project0.Library
         {
            // this.TargetStore = targetStore;
             this.Orderer = orderer;
+            this.Selections = selections;
+            this.OrderId = _orderId.ToString();
+            ++_orderId;
+        }
+
+        /// <summary>
+        /// for stock orders, having no ordering customers
+        /// </summary>
+        public Order(/*Store targetStore,*/ List<Product> selections)
+        {
+            // this.TargetStore = targetStore;
             this.Selections = selections;
             this.OrderId = _orderId.ToString();
             ++_orderId;
