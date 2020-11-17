@@ -54,10 +54,13 @@ Insert INTO "Order" VALUES
 
 --insert some Order items
 INSERT INTO Item (OrderId,ProductId,Quantity) VALUES
-	(1,1,10),(1,2,5);
+	(1,1,10),(1,2,50),(2, 3, 15 ),(2, 2, 10),(3, 3, 5),(3, 1, 30),(4, 1, 30),(4, 2, 40);
 --insert some inventory items
 INSERT INTO Item (StoreId,ProductId,Quantity) VALUES
-	(2,1,10),(3,3,5),(2,2,15),(3,2,20);
+	(2,1,100),(3,3,500),(2,2,150),(3,2,200),(1,3,100),(1,1,200);
 SELECT * FROM Item;
-SELECT * FROM "Store";
 SELECT * FROM "Order";
+SELECT * FROM "Store";
+SELECT * FROM Product;
+SELECT * FROM StoreCustomer
+	Order By id;

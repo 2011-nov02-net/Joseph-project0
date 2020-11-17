@@ -122,14 +122,14 @@ namespace Project0.Data
             //list of all customers
             List<Library.Customer> allCustomers = new List<Library.Customer>();
             //creates an appstore for each store in the db
-            foreach (var store in dbStores)
+            foreach (var dbStore in dbStores)
             {
-                Library.Store appStore = new Library.Store(store.Location, store.Name);
-                foreach(var item in store.Items)
+                Library.Store appStore = new Library.Store(dbStore.Location, dbStore.Name);
+                foreach(var item in dbStore.Items)
                 {
                     appStore.AddItem(item.Product.Name, (int)item.Quantity);
                 }
-                foreach (var order in store.Orders)
+                foreach (var order in dbStore.Orders)
                 {
                     //check if customer is already created
                     bool created = false;
@@ -224,26 +224,5 @@ namespace Project0.Data
             };
             return newOrder;
         }
-
-        public void PrintOrderHistory()
-        {
-            using var context = new P0Context(_dbContextOptions);
-
-            IQueryable<Data.StoreCustomer> customers = context.StoreCustomers
-                .Include(c => c.Orders)
-                    .ThenInclude(o => o.Items)
-                .OrderBy(c => c.Id)
-                .Take(50);
-            foreach (var customer in customers)
-            {
-                Console.WriteLine($" CustomerName: {customer.Name}");
-                foreach (var order in customer.Orders)
-                {
-                    Console.WriteLine($" Order: {order.Id}");
-                }
-            }
-        }
-        
-
     }
 }

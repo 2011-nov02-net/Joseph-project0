@@ -11,7 +11,7 @@ namespace Project0.Library
         public string Name { get; }
         public int Id { get; set; }
         private static int IdSeed = 1;
-        private List<Order> OrderHistory;
+        public List<Order> OrderHistory {get;set;}
 
         //TODO: add default (preferred) store
         public Customer(string name)

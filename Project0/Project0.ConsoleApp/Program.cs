@@ -59,6 +59,7 @@ namespace Project0.ConsoleApp
             // aStore.Restock();
             */
         }
+        /*
         static void PrintOrderHistory()
         {
             using var context = new P0Context(s_dbContextOptions);
@@ -77,6 +78,7 @@ namespace Project0.ConsoleApp
                 }
             }
         }
+        */
 
         static string GetConnectionString()
         {

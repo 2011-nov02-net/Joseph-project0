@@ -77,7 +77,7 @@ namespace Project0.Library
         public void AddItem(string itemName, int quantity)
         {
             //TODO: ensure duplicates are not added
-            if( quantity >= 10000)
+            if( quantity >= 1000)
                 throw new InvalidOperationException($"{quantity} is too large a quantity.");
             else if (quantity < 1)
                 throw new InvalidOperationException($"{quantity} is not a valid quantity.");
