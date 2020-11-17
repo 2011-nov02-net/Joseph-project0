@@ -36,18 +36,18 @@ namespace Project0.Data
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__Item__OrderID__41EDCAC5");
+                    .HasConstraintName("FK__Item__OrderID__17C286CF");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Item__ProductId__43D61337");
+                    .HasConstraintName("FK__Item__ProductId__19AACF41");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.StoreId)
-                    .HasConstraintName("FK__Item__StoreID__42E1EEFE");
+                    .HasConstraintName("FK__Item__StoreID__18B6AB08");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -59,20 +59,20 @@ namespace Project0.Data
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Order__CustomerI__3F115E1A");
+                    .HasConstraintName("FK__Order__CustomerI__14E61A24");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StoreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Order__StoreId__3E1D39E1");
+                    .HasConstraintName("FK__Order__StoreId__13F1F5EB");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("Product");
 
-                entity.HasIndex(e => e.Name, "UQ__Product__737584F6E852D824")
+                entity.HasIndex(e => e.Name, "UQ__Product__737584F60A29C6C5")
                     .IsUnique();
 
                 entity.Property(e => e.Name)
@@ -84,7 +84,7 @@ namespace Project0.Data
             {
                 entity.ToTable("Store");
 
-                entity.HasIndex(e => e.Location, "UQ__Store__E55D3B10A08144F6")
+                entity.HasIndex(e => e.Location, "UQ__Store__E55D3B106F424623")
                     .IsUnique();
 
                 entity.Property(e => e.Location)
@@ -100,7 +100,7 @@ namespace Project0.Data
             {
                 entity.ToTable("StoreCustomer");
 
-                entity.HasIndex(e => e.Name, "UQ__StoreCus__737584F6B4CB4194")
+                entity.HasIndex(e => e.Name, "UQ__StoreCus__737584F60D0D873E")
                     .IsUnique();
 
                 entity.Property(e => e.Name)

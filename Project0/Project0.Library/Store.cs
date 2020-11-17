@@ -60,17 +60,9 @@ namespace Project0.Library
         /// </summary>
         public void RemoveCustomer(Customer customer)
         {
-            Customers.Remove(customer);
+            if (this.Customers.Contains(customer))
+                Customers.Remove(customer);
         }
-        /// <summary>
-        /// outputs the list of product names, with their quantity at the targeted store
-        /// </summary>
-        public void PrintInventory()
-        {
-            //may be better to move to Program.cs
-
-        }
-
         /// <summary>
         /// Adds an item to the store's inventory list
         /// </summary>

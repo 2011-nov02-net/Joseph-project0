@@ -12,55 +12,44 @@ namespace Project0.ConsoleApp
 {
     class ConsoleInterface
     {
-        /*
-        public ConsoleInterface()
-        {
-
-            using var logStream = new StreamWriter("ef-logs.txt");
-
-            var optionsBuilder = new DbContextOptionsBuilder<P0Context>();
-            optionsBuilder.UseSqlServer(GetConnectionString());
-            optionsBuilder.LogTo(logStream.WriteLine, LogLevel.Information);
-            var _dbContextOptions = optionsBuilder.Options;
-            P0Repository p0Repo = new P0Repository(optionsBuilder.Options);
-
-
-            var optionsBuilder = new DbContextOptionsBuilder<P0Context>();
-            static DbContextOptions<P0Context> s_dbContextOptions;
-            s_dbContextOptions = optionsBuilder.Options;
-
-        }
-        */
 
         public void PromptUser(DbContextOptions<P0Context> dbContextOptions)
         {
-            
 
             P0Repository p0Repo = new P0Repository(dbContextOptions);
-            //customerId = 1 is valid for testing
-            int customerId = 2;
-            string CustomerName = "YourName";
-            List<Library.Store> storeList = p0Repo.GetStores();
+
+            //initialize login parameters
+            int customerId = 0;
+
+            //populate initial stores and their customers from db
+            List<Library.Customer> customerList = new List<Library.Customer>();
+            List<Library.Store> storeList = p0Repo.GetStores(customerList);
             while (true)
             {
                 Console.WriteLine();
                 Console.WriteLine("r:\tReturning Customer");
                 Console.WriteLine("n:\tNew Customer");
                 var input = Console.ReadLine();
-                //present customer options
+
+                //Ask if new customer
                 if (input == "r")
                 {
+                    // compare customerID with list of all customers and login if found, else return to login
                     Console.WriteLine("Login with your Customer Id:");
                     Console.WriteLine();
                     input = Console.ReadLine();
-                    //TODO: look for valid customer login
-                    var custStores = storeList.FindAll(x => x.Customers.Exists(y => y.Id == customerId));
-                    if (input == Convert.ToString(customerId))
+
+                    //present options to returning customer
+                    //if (input == Convert.ToString(customerId))
+                    if (customerList.Exists(c => c.Id == Convert.ToInt32(input)))
                     {
+                        Library.Customer logCustomer = customerList.Find(c => c.Id == Convert.ToInt32(input));
+                        var custStores = storeList.FindAll(x => x.Customers.Exists(y => y.Id == customerId));
+
                         Console.WriteLine();
-                        Console.WriteLine($"Welcome {CustomerName}");
+                        Console.WriteLine($"Welcome {logCustomer.Name}");
                         Console.WriteLine();
-                        Console.WriteLine("p:\tPlace a new order");
+                        Console.WriteLine("p:\tPlace a new order at a store");
                         Console.WriteLine("s:\tSearch for an account");
                         Console.WriteLine("h:\tPrint your order history");
                         Console.WriteLine("t:\tPrint orders from a store");
@@ -68,8 +57,15 @@ namespace Project0.ConsoleApp
                         input = Console.ReadLine();
                         if (input == "p")
                         {
-                            // Create and execute a new order
-                            Library.Order order = new Library.Order();
+                            // Create and execute a new order at a target store
+                            //read target store, and selections from logged in customer
+                            Library.Store storeChoice = ReadStoreChoice(storeList);
+                            PrintStoreInventory(storeChoice);
+                            List<Library.Product> selections = ReadSelections(storeChoice);
+                            Library.Order order = new Library.Order(storeChoice, logCustomer, selections);
+
+
+                            /*
                             List<string> itemName = new List<string>();
                             List<int> itemQuantity = new List<int>();
                             while (input != "q")
@@ -107,11 +103,8 @@ namespace Project0.ConsoleApp
                                 Console.WriteLine("Otherwise press enter to continue ordering");
                                 input = Console.ReadLine();
                             }
-                            for (int i = 0; i < itemName.Count; ++i)
-                            {
 
-                            }
-
+                            */
                         }
                         else if (input == "s")
                         {
@@ -137,8 +130,9 @@ namespace Project0.ConsoleApp
                         }
                         else if (input == "t")
                         {
-                            //TODO: print the orders this customer has made from a store
-                           // var custStores = storeList.FindAll(x => x.Customers.Exists(y => y.Id == customerId));
+                            //print the orders this customer has made from a store
+                            var storeChoice = ReadStoreChoice(storeList);
+                            PrintCustOrders(customerId, storeChoice);
 
                         }
                         else
@@ -187,6 +181,45 @@ namespace Project0.ConsoleApp
             return storeChoice;
         }
 
+        //read in the selections from passed store
+        private List<Library.Product> ReadSelections(Library.Store store)
+        {
+            List<Library.Product> prodList = new List<Library.Product>();
+
+            Console.WriteLine();
+            Console.WriteLine("Select a product by typing it's name:");
+            var input = Console.ReadLine();
+
+            while (true)
+            {
+                //input product found in store inventory
+                if(store.Inventory.Exists(x => x.Name == input))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("How many would you like to order?");
+                    //TODO: handle invalid input
+                    int quantity = Convert.ToInt32(Console.ReadLine());
+                    prodList.Add(new Library.Product(input, quantity));
+                }
+                //user quits, return current selectiuon list
+                else if(input == "q")
+                {
+                    break;
+                }
+                //unexpected input
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Product not found!");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Select another product by typing it's name, or press \"q\" to complete order.");
+                input = Console.ReadLine();
+            }
+            return prodList;
+        }
+
+        //TODO: search for a customer at this store using customer Name
         private string ReadCustomer()
         {
             Console.WriteLine();
@@ -199,16 +232,45 @@ namespace Project0.ConsoleApp
             Console.WriteLine();
             foreach (Library.Store store in custStores)
             {
+                Console.WriteLine();
                 Console.WriteLine($"Your past orders at {store.Name}:");
                 Console.WriteLine();
                 var customer = store.Customers.Find(x => x.Id == customerId);
                 foreach(Library.Order o in customer.OrderHistory)
-                {   //WIP
-                    foreach(Library.Product i in o.Selections)
+                {
+                    Console.WriteLine($"Order number: {o.OrderId}");
+                    foreach (Library.Product i in o.Selections)
                     {
-                        Console.WriteLine($"\t Product: {i.Name}\t\tQuantity: {i.Quantity}\t DateTime: {o.Time}");
+                        Console.WriteLine($"\tProduct: {i.Name}\t  Quantity: {i.Quantity}\t DateTime: {o.Time}");
                     }
                 }
+            }
+        }
+        private void PrintCustOrders(int customerId, Library.Store store)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Your past orders at {store.Name}:");
+            Console.WriteLine();
+            var customer = store.Customers.Find(x => x.Id == customerId);
+            foreach (Library.Order o in customer.OrderHistory)
+            {
+                Console.WriteLine($"Order number: {o.OrderId}");
+                foreach (Library.Product i in o.Selections)
+                {
+                    Console.WriteLine($"\tProduct: {i.Name}\t  Quantity: {i.Quantity}\t DateTime: {o.Time}");
+                }
+            }
+        }
+
+        //Prints the inventory at this store
+        private void PrintStoreInventory(Library.Store store)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Items available in {store.Name}:");
+
+            foreach(var product in store.Inventory)
+            {
+                Console.WriteLine($"\t{product.Name} Quantity: {product.Quantity}");
             }
         }
     }

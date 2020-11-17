@@ -107,7 +107,7 @@ namespace Project0.Data
 
         //return a list of appstores from the db
         //should be called first to populate stores
-        public List<Library.Store> GetStores()
+        public List<Library.Store> GetStores(List<Library.Customer> allCustomers)
         {
             using var context = new P0Context(_dbContextOptions);
             List<Library.Store> storeList = new List<Library.Store>();
@@ -120,7 +120,7 @@ namespace Project0.Data
                 .ToList();
 
             //list of all customers
-            List<Library.Customer> allCustomers = new List<Library.Customer>();
+            //List<Library.Customer> allCustomers = new List<Library.Customer>();
             //creates an appstore for each store in the db
             foreach (var dbStore in dbStores)
             {
@@ -138,6 +138,7 @@ namespace Project0.Data
                         if (customer.Name == order.Customer.Name)
                         {
                             created = true;
+                            appStore.AddCustomer(customer);
                             customer.AddToOrderHistory(GetOrder(order.Id, appStore, customer));
                         }
                     }
@@ -203,11 +204,19 @@ namespace Project0.Data
                 .Where(i => i.OrderId == orderId);
             foreach (var item in dbItems)
             {
-                foreach (var product in appStore.Inventory) {
+                if(selections.Count == 0)
+                    selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
+                /*
+                foreach (var product in selections)
+                {
                     if (item.Product.Name != product.Name)
-                    {
                         selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
-                    }
+                }
+                */
+                for(int i = 0; i < selections.Count; ++i)
+                {
+                    if (item.Product.Name != selections.ElementAt(i).Name)
+                        selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
                 }
             }
                 
