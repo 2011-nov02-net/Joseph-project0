@@ -9,15 +9,16 @@ namespace Project0.Library
     public class Customer
     {
         public string Name { get; }
-        public string Id { get; }
+        public int Id { get; set; }
         private static int IdSeed = 1;
         private List<Order> OrderHistory;
 
         //TODO: add default (preferred) store
         public Customer(string name)
         {
+            OrderHistory = new List<Order>();
             this.Name = name;
-            this.Id = IdSeed.ToString();
+            this.Id = IdSeed;
             ++IdSeed;
         }
         /// <summary>
@@ -26,7 +27,9 @@ namespace Project0.Library
         public void AddToOrderHistory(Order order)
         {
             //may want to only track OrderIds
-            OrderHistory.Add(order);
+            if (order != null) { 
+                this.OrderHistory.Add(order);
+            }
         }
     }
 }

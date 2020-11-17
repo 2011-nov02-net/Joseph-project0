@@ -18,26 +18,41 @@ namespace Project0.Library
     public class Store
     {
         public string Address { get;}
-        public string ZipCode { get; }
+        public string Name { get; }
 
-        private List<Product> _inventory;
-        private List<Customer> _customers;
+        public int Id { get; set; }
+        private static int _Id = 1;
 
-        public Store( List<Product> initialInventory, string address,string zip)
+        public List<Product> Inventory { get; set; }
+        public List<Customer> Customers { get; set; }
+
+        public Store( List<Product> initialInventory, string address,string name)
         {
             this.Address = address;
-            this.ZipCode = zip;
-            this._inventory = initialInventory;
+            this.Name = name;
+            this.Inventory = initialInventory;
+            this.Customers = new List<Customer>();
+            this.Id = _Id;
+            ++_Id;
 
         }
+        public Store( string address, string name)
+        {
+            this.Address = address;
+            this.Name = name;
+            this.Inventory = new List<Product>();
+            this.Customers = new List<Customer>();
+            this.Id = _Id;
+            ++_Id;
 
+        }
         /// <summary>
         /// Adds a customer to the store's customer list
         /// </summary>
         public void AddCustomer(Customer customer)
         {
-            if (!this._customers.Contains(customer))
-                _customers.Add(customer);
+            if (!this.Customers.Contains(customer))
+                Customers.Add(customer);
         }
 
         /// <summary>
@@ -45,7 +60,7 @@ namespace Project0.Library
         /// </summary>
         public void RemoveCustomer(Customer customer)
         {
-            _customers.Remove(customer);
+            Customers.Remove(customer);
         }
         /// <summary>
         /// outputs the list of product names, with their quantity at the targeted store
@@ -68,7 +83,7 @@ namespace Project0.Library
                 throw new InvalidOperationException($"{quantity} is not a valid quantity.");
             else 
             {
-                _inventory.Add(new Product(itemName, quantity) { InStock = true });
+                Inventory.Add(new Product(itemName, quantity) { InStock = true });
             }
         }
 
@@ -77,8 +92,8 @@ namespace Project0.Library
         /// </summary>
         public void RemoveItem(string itemName)
         {
-            var product = _inventory.First(x => x.Name.Equals(itemName));
-            _inventory.Remove(product);
+            var product = Inventory.First(x => x.Name.Equals(itemName));
+            Inventory.Remove(product);
         }
 
         /// <summary>
@@ -92,7 +107,7 @@ namespace Project0.Library
             AddCustomer(order.Orderer);
             List<bool> orderResults = new List<bool>();
             
-            foreach (Product inventoryItem in this._inventory)
+            foreach (Product inventoryItem in this.Inventory)
             {
                 bool carryItem = order.Selections.Exists(x => x.Name == inventoryItem.Name);
             
@@ -125,12 +140,12 @@ namespace Project0.Library
         {
             foreach (Product orderItem in restockOrder.Selections)
             {
-                bool carryItem = this._inventory.Exists(x => x.Name == orderItem.Name);
+                bool carryItem = this.Inventory.Exists(x => x.Name == orderItem.Name);
                 //if item is carried by the store, restock it with the order quantity
                 //else add item to the list of items carried by the store
                 if (carryItem)
                 {
-                    Product restockSelection = this._inventory.Find(x => x.Name == orderItem.Name);
+                    Product restockSelection = this.Inventory.Find(x => x.Name == orderItem.Name);
                     restockSelection.Quantity += orderItem.Quantity;
                 }
                 else

@@ -10,29 +10,31 @@ namespace Project0.Library
     /// </summary>
     public class Order
     {
-       // public Store TargetStore { get; set;  }
+        public Store TargetStore { get; set;  }
         public Customer Orderer { get; set; }
-        public string OrderId;
+        public int OrderId;
         private static int _orderId = 1;
-        public List<Product> Selections;
 
-        public Order(/*Store targetStore,*/ Customer orderer, List<Product> selections)
+        public DateTime Time { get; set; }
+        public List<Product> Selections { get; set; } = new List<Product>();
+
+        public Order(Store targetStore, Customer orderer, List<Product> selections)
         {
-           // this.TargetStore = targetStore;
+            this.TargetStore = targetStore;
             this.Orderer = orderer;
             this.Selections = selections;
-            this.OrderId = _orderId.ToString();
+            this.OrderId = _orderId;
+            this.Time = DateTime.Now;
             ++_orderId;
         }
 
         /// <summary>
         /// for stock orders, having no ordering customers
         /// </summary>
-        public Order(/*Store targetStore,*/ List<Product> selections)
+        public Order()
         {
-            // this.TargetStore = targetStore;
-            this.Selections = selections;
-            this.OrderId = _orderId.ToString();
+            this.OrderId = _orderId;
+            this.Time = DateTime.Now;
             ++_orderId;
         }
 

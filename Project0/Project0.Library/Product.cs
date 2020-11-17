@@ -10,7 +10,11 @@ namespace Project0.Library
     public class Product
     {
         public bool InStock { get; set; }
-        public string Name { get; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+
+        public int Id;
+        private static int _Id = 1;
 
         private int _quantity;
         public int Quantity
@@ -35,6 +39,11 @@ namespace Project0.Library
         {
             this.Name = name;
             this._quantity = initialQuantity;
+            this.Id = _Id;
+            ++_Id;
+        }
+        public Product()
+        {
         }
 
     }
