@@ -57,54 +57,22 @@ namespace Project0.ConsoleApp
                         input = Console.ReadLine();
                         if (input == "p")
                         {
-                            // Create and execute a new order at a target store
-                            //read target store, and selections from logged in customer
+                            //Create and execute a new order at a target store
+                            //read target store, and selections from logged in customer, then creat this order in db
+                            //PrintOrderHistory(logCustomer.Id, storeList);
                             Library.Store storeChoice = ReadStoreChoice(storeList);
                             PrintStoreInventory(storeChoice);
                             List<Library.Product> selections = ReadSelections(storeChoice);
-                            Library.Order order = new Library.Order(storeChoice, logCustomer, selections);
+                            Library.Order newOrder = new Library.Order(storeChoice, logCustomer, selections);
 
+                            //add order to db
+                            p0Repo.CreateOrder(newOrder);
 
-                            /*
-                            List<string> itemName = new List<string>();
-                            List<int> itemQuantity = new List<int>();
-                            while (input != "q")
-                            {
+                            //execute order in db and update target store, add customer to store if needed
+                            storeChoice = p0Repo.FillOrderDb(storeChoice,newOrder);
+                            //PrintOrderHistory(logCustomer.Id, storeList); 
+                            Console.WriteLine();
 
-                                //get product name and quantity from input
-                                Console.WriteLine();
-                                Console.WriteLine("Enter a product:");
-                                string productName = Console.ReadLine();
-                                Library.Product product = null;
-                                try
-                                {
-                                    //product = p0Repo.GetProduct(productName);
-                                }
-                                catch (ArgumentException)
-                                {
-                                    Console.WriteLine($"Couldn't find {productName} in inventory.");
-                                }
-                                Console.WriteLine("Enter a quantity:");
-                                string tryQuantity = Console.ReadLine();
-                                int quantity = 0; //definitely not ok 
-                                try
-                                {
-                                    quantity = Int32.Parse(tryQuantity);
-                                    Console.WriteLine(quantity);
-                                }
-                                catch (FormatException)
-                                {
-                                    Console.WriteLine($"not a valid quantity: '{quantity}'");
-                                }
-                                //add inputs to lists
-                                itemName.Add(productName);
-                                itemQuantity.Add(quantity);
-                                Console.WriteLine("Press \"q\" if order is complete");
-                                Console.WriteLine("Otherwise press enter to continue ordering");
-                                input = Console.ReadLine();
-                            }
-
-                            */
                         }
                         else if (input == "s")
                         {
@@ -235,13 +203,22 @@ namespace Project0.ConsoleApp
                 Console.WriteLine();
                 Console.WriteLine($"Your past orders at {store.Name}:");
                 Console.WriteLine();
+                //continue if no history found
+                if (!store.Customers.Exists(x => x.Id == customerId))
+                {
+                    Console.WriteLine("No previous orders");
+                    continue;
+                }
                 var customer = store.Customers.Find(x => x.Id == customerId);
                 foreach(Library.Order o in customer.OrderHistory)
                 {
-                    Console.WriteLine($"Order number: {o.OrderId}");
-                    foreach (Library.Product i in o.Selections)
+                    if (store.Id == o.TargetStore.Id)
                     {
-                        Console.WriteLine($"\tProduct: {i.Name}\t  Quantity: {i.Quantity}\t DateTime: {o.Time}");
+                        Console.WriteLine($"Order number: {o.OrderId}");
+                        foreach (Library.Product i in o.Selections)
+                        {
+                            Console.WriteLine($"\tProduct: {i.Name}\t Quantity: {i.Quantity}\t DateTime: {o.Time}");
+                        }
                     }
                 }
             }
@@ -257,7 +234,7 @@ namespace Project0.ConsoleApp
                 Console.WriteLine($"Order number: {o.OrderId}");
                 foreach (Library.Product i in o.Selections)
                 {
-                    Console.WriteLine($"\tProduct: {i.Name}\t  Quantity: {i.Quantity}\t DateTime: {o.Time}");
+                    Console.WriteLine($"\tProduct: {i.Name}\t Quantity: {i.Quantity}\t DateTime: {o.Time}");
                 }
             }
         }

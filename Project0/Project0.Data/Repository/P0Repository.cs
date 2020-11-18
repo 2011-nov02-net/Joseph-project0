@@ -119,8 +119,6 @@ namespace Project0.Data
                     .ThenInclude(o => o.Customer)
                 .ToList();
 
-            //list of all customers
-            //List<Library.Customer> allCustomers = new List<Library.Customer>();
             //creates an appstore for each store in the db
             foreach (var dbStore in dbStores)
             {
@@ -184,12 +182,76 @@ namespace Project0.Data
             context.SaveChanges();
         }
 
-        public void CreateOrder(Library.Order order)
+        // Enter a new order into db
+        public void CreateOrder(Library.Order appOrder)
         {
-            //TODO: Enter a new order into db
             using var context = new P0Context(_dbContextOptions);
- 
+            //map library order to db
+            var dbOrder = new Order()
+            {
+                Store = context.Stores.First(s => s.Id == appOrder.TargetStore.Id),
+                Customer = context.StoreCustomers.First(c => c.Id == appOrder.Orderer.Id),
+                Time = appOrder.Time
+            };
+
+            //map all items in the order to db
+            foreach (Library.Product selection in appOrder.Selections)
+            {
+                //create a new item, Store = null unless item is part of an inventory
+                var dbItem = new Item()
+                {
+                    Product = context.Products.First(p => p.Name == selection.Name),
+                    Quantity = selection.Quantity,
+                    Store = null,
+                    //Store = context.Stores.First(s => s.Id == appOrder.TargetStore.Id),
+                    Order = dbOrder
+                };
+                context.Add(dbItem);
+            }
+            context.Add(dbOrder);
             context.SaveChanges();
+        }
+        /// <summary>
+        /// //execute order in db and update passed Store
+        /// </summary>
+        /// <param name="storeChoice"></param>
+        /// <param name="appOrder"></param>
+        /// <returns></returns>
+        public Library.Store FillOrderDb(Library.Store storeChoice, Library.Order appOrder)
+        {
+            using var context = new P0Context(_dbContextOptions);
+            List<bool> successList = storeChoice.FillOrder(appOrder);
+            int successListIndex = 0;
+
+            //go ahead and grab everything
+            var dbStore = context.Stores
+                .Include(s => s.Items)
+                    .ThenInclude(i => i.Product)
+                .Include(s => s.Orders)
+                    .ThenInclude(o => o.Customer)
+                .First(s => s.Id == storeChoice.Id);
+
+            //get store inventory
+            var dbItems = context.Items.Where(s => s.StoreId == storeChoice.Id);
+
+            //find all items in inventory matching product.Name appOrderId then decrement quantity and update appStore
+            foreach (var product in appOrder.Selections)
+            {
+                //find first item in dbItems that has the same name, and is an inventory
+                var dbInvItem = dbItems.FirstOrDefault(i => i.Product.Name == product.Name);
+
+                //update the db when fillOrder is successful
+                if (successList.ElementAt(successListIndex)) // == appOrder.OrderId &&
+                {
+                    dbInvItem.Quantity -= product.Quantity;
+                    context.Update(dbInvItem);
+                    //storeChoice.Inventory.First(x=>x.Name == product.Name).Quantity = (int)dbInvItem.Quantity;
+                }
+                successListIndex++;
+            }
+
+            context.SaveChanges();
+            return storeChoice;
         }
 
         //returns an appOrder from the db
@@ -206,13 +268,7 @@ namespace Project0.Data
             {
                 if(selections.Count == 0)
                     selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
-                /*
-                foreach (var product in selections)
-                {
-                    if (item.Product.Name != product.Name)
-                        selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
-                }
-                */
+
                 for(int i = 0; i < selections.Count; ++i)
                 {
                     if (item.Product.Name != selections.ElementAt(i).Name)

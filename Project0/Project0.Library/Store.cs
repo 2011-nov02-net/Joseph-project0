@@ -99,19 +99,19 @@ namespace Project0.Library
             AddCustomer(order.Orderer);
             List<bool> orderResults = new List<bool>();
             
-            foreach (Product inventoryItem in this.Inventory)
+
+            foreach(Product orderItem in order.Selections)
             {
-                bool carryItem = order.Selections.Exists(x => x.Name == inventoryItem.Name);
-            
-                //TODO: add reason for failure to fill
-                if ( carryItem && inventoryItem.InStock)
+                bool carryItem = this.Inventory.Exists(x => x.Name == orderItem.Name);
+                Product inventoryItem = this.Inventory.FirstOrDefault(x => x.Name == orderItem.Name);
+                bool inStock = inventoryItem.Quantity > 0;
+                if (carryItem && inStock)
                 {
-                    Product orderSelection = order.Selections.Find(x => x.Name == inventoryItem.Name);
-                    if (orderSelection.Quantity > inventoryItem.Quantity)
+                    if (orderItem.Quantity > inventoryItem.Quantity)
                         orderResults.Add(false);
                     else
                     {
-                        inventoryItem.Quantity -= orderSelection.Quantity;
+                        inventoryItem.Quantity -= orderItem.Quantity;
                         //TODO: add check for InStock, after filling order
                         orderResults.Add(true);
                     }
@@ -121,6 +121,7 @@ namespace Project0.Library
                     orderResults.Add(false);
                 }
             }
+            order.Orderer.AddToOrderHistory(order);
             return orderResults;
         }
         /// <summary>
