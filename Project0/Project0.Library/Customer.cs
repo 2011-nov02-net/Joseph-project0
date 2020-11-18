@@ -16,7 +16,7 @@ namespace Project0.Library
         //TODO: add default (preferred) store
         public Customer(string name)
         {
-            OrderHistory = new List<Order>();
+            this.OrderHistory = new List<Order>();
             this.Name = name;
             this.Id = IdSeed;
             ++IdSeed;
@@ -27,9 +27,8 @@ namespace Project0.Library
         public void AddToOrderHistory(Order order)
         {
             //may want to only track OrderIds
-            if (order != null) { 
+            if (order != null)
                 this.OrderHistory.Add(order);
-            }
         }
     }
 }

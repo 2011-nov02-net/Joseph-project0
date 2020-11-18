@@ -26,12 +26,12 @@ namespace Project0.ConsoleApp
             List<Library.Store> storeList = p0Repo.GetStores(customerList);
             while (true)
             {
+                //Ask if new customer
                 Console.WriteLine();
                 Console.WriteLine("r:\tReturning Customer");
                 Console.WriteLine("n:\tNew Customer");
                 var input = Console.ReadLine();
 
-                //Ask if new customer
                 if (input == "r")
                 {
                     // compare customerID with list of all customers and login if found, else return to login
@@ -69,7 +69,7 @@ namespace Project0.ConsoleApp
                             p0Repo.CreateOrder(newOrder);
 
                             //execute order in db and update target store, add customer to store if needed
-                            storeChoice = p0Repo.FillOrderDb(storeChoice,newOrder);
+                            storeChoice = p0Repo.FillOrderDb(storeChoice, newOrder);
                             //PrintOrderHistory(logCustomer.Id, storeList); 
                             Console.WriteLine();
 
@@ -119,9 +119,12 @@ namespace Project0.ConsoleApp
                 //create a new customer
                 else if (input == "n")
                 {
-                    //TODO: create a new customer
+                    Console.WriteLine("Enter your full name:");
+                    string customerName = Console.ReadLine();
+
+                    p0Repo.CreateCustomer(customerName, customerList);
                     Console.WriteLine();
-                    Console.WriteLine("New account created, returning to Login:");
+                    Console.WriteLine("New account created, returning to Login.");
                     Console.WriteLine();
                 }
             }
@@ -161,7 +164,7 @@ namespace Project0.ConsoleApp
             while (true)
             {
                 //input product found in store inventory
-                if(store.Inventory.Exists(x => x.Name == input))
+                if (store.Inventory.Exists(x => x.Name == input))
                 {
                     Console.WriteLine();
                     Console.WriteLine("How many would you like to order?");
@@ -170,7 +173,7 @@ namespace Project0.ConsoleApp
                     prodList.Add(new Library.Product(input, quantity));
                 }
                 //user quits, return current selectiuon list
-                else if(input == "q")
+                else if (input == "q")
                 {
                     break;
                 }
@@ -210,7 +213,7 @@ namespace Project0.ConsoleApp
                     continue;
                 }
                 var customer = store.Customers.Find(x => x.Id == customerId);
-                foreach(Library.Order o in customer.OrderHistory)
+                foreach (Library.Order o in customer.OrderHistory)
                 {
                     if (store.Id == o.TargetStore.Id)
                     {
@@ -245,11 +248,10 @@ namespace Project0.ConsoleApp
             Console.WriteLine();
             Console.WriteLine($"Items available in {store.Name}:");
 
-            foreach(var product in store.Inventory)
+            foreach (var product in store.Inventory)
             {
                 Console.WriteLine($"\t{product.Name} Quantity: {product.Quantity}");
             }
         }
     }
 }
-

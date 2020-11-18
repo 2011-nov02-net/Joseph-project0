@@ -103,22 +103,25 @@ namespace Project0.Library
             foreach(Product orderItem in order.Selections)
             {
                 bool carryItem = this.Inventory.Exists(x => x.Name == orderItem.Name);
-                Product inventoryItem = this.Inventory.FirstOrDefault(x => x.Name == orderItem.Name);
-                bool inStock = inventoryItem.Quantity > 0;
-                if (carryItem && inStock)
+                if (carryItem)
                 {
-                    if (orderItem.Quantity > inventoryItem.Quantity)
-                        orderResults.Add(false);
+                    Product inventoryItem = this.Inventory.FirstOrDefault(x => x.Name == orderItem.Name);
+                    bool inStock = inventoryItem.Quantity > 0;
+                    if (inStock)
+                    {
+                        if (orderItem.Quantity > inventoryItem.Quantity)
+                            orderResults.Add(false);
+                        else
+                        {
+                            inventoryItem.Quantity -= orderItem.Quantity;
+                            //TODO: add check for InStock, after filling order
+                            orderResults.Add(true);
+                        }
+                    }
                     else
                     {
-                        inventoryItem.Quantity -= orderItem.Quantity;
-                        //TODO: add check for InStock, after filling order
-                        orderResults.Add(true);
+                        orderResults.Add(false);
                     }
-                }
-                else
-                {
-                    orderResults.Add(false);
                 }
             }
             order.Orderer.AddToOrderHistory(order);

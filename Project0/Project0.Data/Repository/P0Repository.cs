@@ -174,15 +174,29 @@ namespace Project0.Data
             return OrdIds;
         }
 
-        public void CreateCustomer(Library.Customer customer)
+        /// <summary>
+        /// Enter a new customer into db, and app
+        /// </summary>
+        /// <param name="customerName"></param>
+        public void CreateCustomer(string customerName, List<Library.Customer> customers)
         {
-            //TODO: Enter a new customer into db
+            //add to app
+            Library.Customer newCustomer = new Library.Customer(customerName);
+            customers.Add(newCustomer);
+
+            //add to db
             using var context = new P0Context(_dbContextOptions);
 
+            newCustomer.Id = context.StoreCustomers.OrderBy(x => x.Id).Last().Id + 1;
+            var dbCustomer = new StoreCustomer(){Name = customerName};
+            context.Add(dbCustomer);
             context.SaveChanges();
         }
 
-        // Enter a new order into db
+        /// <summary>
+        /// Enter a new order into db
+        /// </summary>
+        /// <param name="appOrder"></param>
         public void CreateOrder(Library.Order appOrder)
         {
             using var context = new P0Context(_dbContextOptions);
