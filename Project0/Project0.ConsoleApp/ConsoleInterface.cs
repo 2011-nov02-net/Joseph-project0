@@ -32,6 +32,7 @@ namespace Project0.ConsoleApp
                 Console.WriteLine("n:\tNew Customer");
                 var input = Console.ReadLine();
 
+                //Returning customer
                 if (input == "r")
                 {
                     // compare customerID with list of all customers and login if found, else return to login
@@ -44,6 +45,7 @@ namespace Project0.ConsoleApp
                     if (customerList.Exists(c => c.Id == Convert.ToInt32(input)))
                     {
                         Library.Customer logCustomer = customerList.Find(c => c.Id == Convert.ToInt32(input));
+                        customerId = logCustomer.Id;
                         var custStores = storeList.FindAll(x => x.Customers.Exists(y => y.Id == customerId));
 
                         Console.WriteLine();
@@ -94,7 +96,7 @@ namespace Project0.ConsoleApp
                         else if (input == "h")
                         {
                             //Print this customer's order history
-                            PrintOrderHistory(customerId, custStores);
+                            PrintOrderHistory(customerId, storeList);
                         }
                         else if (input == "t")
                         {
@@ -124,7 +126,8 @@ namespace Project0.ConsoleApp
 
                     p0Repo.CreateCustomer(customerName, customerList);
                     Console.WriteLine();
-                    Console.WriteLine("New account created, returning to Login.");
+                    Console.WriteLine($"New account created, your Customer ID is: {Convert.ToString(customerList.Last().Id)}");
+                    Console.WriteLine("Returning to Login.");
                     Console.WriteLine();
                 }
             }
@@ -169,8 +172,17 @@ namespace Project0.ConsoleApp
                     Console.WriteLine();
                     Console.WriteLine("How many would you like to order?");
                     //TODO: handle invalid input
-                    int quantity = Convert.ToInt32(Console.ReadLine());
-                    prodList.Add(new Library.Product(input, quantity));
+                    try
+                    {
+                        int quantity = Convert.ToInt32(Console.ReadLine());
+                        prodList.Add(new Library.Product(input, quantity));
+                    }
+                    catch (System.FormatException)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Please enter a number");
+                        Console.WriteLine();
+                    }
                 }
                 //user quits, return current selectiuon list
                 else if (input == "q")
@@ -210,6 +222,7 @@ namespace Project0.ConsoleApp
                 if (!store.Customers.Exists(x => x.Id == customerId))
                 {
                     Console.WriteLine("No previous orders");
+                    Console.WriteLine();
                     continue;
                 }
                 var customer = store.Customers.Find(x => x.Id == customerId);
@@ -222,6 +235,7 @@ namespace Project0.ConsoleApp
                         {
                             Console.WriteLine($"\tProduct: {i.Name}\t Quantity: {i.Quantity}\t DateTime: {o.Time}");
                         }
+                        Console.WriteLine();
                     }
                 }
             }
