@@ -32,53 +32,8 @@ namespace Project0.ConsoleApp
             ConsoleInterface Ci = new ConsoleInterface();
             Ci.PromptUser(s_dbContextOptions);
 
-            //PrintOrderHistory();
-
-            /*//old stuff
-            List<Library.Product> prodList = new List<Library.Product>();
-
-            Library.Store aStore = new Library.Store(prodList, "123 Fake St.", "77840");
-
-            //add some customers
-            Customer Ruth = new Customer("Ruth Ginsberg");
-            Customer Clarence = new Customer("Clarence Thomas");
-            Customer Sam = new Customer("Samuel Alito");
-            Customer John = new Customer("John Roberts");
-            aStore.AddCustomer(Ruth);
-            aStore.AddCustomer(Clarence);
-            aStore.AddCustomer(Sam);
-            aStore.AddCustomer(John);
-
-            //add some inventory items
-            List<Library.Product> stockList = new List<Library.Product>
-            {
-                //     new Product()
-            };
-
-            Library.Order stockOrder = new Library.Order(stockList);
-            // aStore.Restock();
-            */
         }
-        /*
-        static void PrintOrderHistory()
-        {
-            using var context = new P0Context(s_dbContextOptions);
 
-            IQueryable<Data.StoreCustomer> customers = context.StoreCustomers
-                .Include(c => c.Orders)
-                    .ThenInclude(o => o.Items)
-                .OrderBy(c => c.Id)
-                .Take(50);
-            foreach(var customer in customers)
-            {
-                Console.WriteLine($" CustomerName: {customer.Name}");
-                foreach (var order in customer.Orders)
-                {
-                    Console.WriteLine($" Order: {order.Id}");
-                }
-            }
-        }
-        */
 
         static string GetConnectionString()
         {

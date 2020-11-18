@@ -26,8 +26,8 @@ namespace XUnitTestProject0
 
         [Theory]
         [InlineData("bananas", 10)]
-        [InlineData("bananananas", 0 )]//fails
-        [InlineData("", 1000)]//fails
+        [InlineData("bananananas", 0 )]//handled exception
+        [InlineData("", 1000)]//unhandled exception
         public void StoreAddItemTest(string itemName, int quantity)
         {
             List<Product> testInventory = new List<Product>();
@@ -113,7 +113,7 @@ namespace XUnitTestProject0
             Assert.True(ordersFilled.First() == false);
             Assert.True(testStore.Inventory.First().Quantity == 10);
         }
-
+        /*
         [Fact]
         public void StoreRestockTest()
         {
@@ -149,7 +149,7 @@ namespace XUnitTestProject0
 
             Assert.True(testStore.Inventory.First().Quantity == 10);
         }
-
+        */
         [Fact]
         public void CustomerAddToOrderHistoryTest1()
         {

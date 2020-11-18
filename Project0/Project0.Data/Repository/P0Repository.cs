@@ -16,59 +16,7 @@ namespace Project0.Data
             _dbContextOptions = contextOptions;
         }
 
-        /*
-        public void AddOrder(Library.Order appOrder)
-        {
-            using var context = new P0Context(_dbContextOptions);
-            //map library order to db
-            var dbOrder = new Order()
-            {
-                Store = _dbContext.Stores.First(s => s.Id == appOrder.TargetStore.Id),
-                Customer = _dbContext.StoreCustomers.First(c => c.Id == appOrder.Orderer.Id),
-                Time = appOrder.Time
-            };
 
-            //map all items in the order to db
-            foreach(Library.Product selection in appOrder.Selections)
-            {
-                var dbItem = new Item()
-                {
-                    Product = _dbContext.Products.First(p => p.Id == selection.Id),
-                    Quantity = selection.Quantity,
-                    Store = _dbContext.Stores.First(s => s.Id == appOrder.TargetStore.Id),
-                    Order = dbOrder
-                };
-                _dbContext.Add(dbItem);
-            }
-            _dbContext.Add(dbOrder);
-            _dbContext.SaveChanges();
-        }
-        //retrieve product from db
-        public Library.Product GetProduct(string productName)
-        {
-            using var context = new P0Context(_dbContextOptions);
-            var dbProduct = context.Products.First(p => p.Name == productName);
-
-            var appProduct = new Library.Product()
-                { Id = dbProduct.Id, Name = productName };
-            _dbContext.SaveChanges();
-            return appProduct;
-        }
-        
-        //creates a store's inventory from the db
-        public void PopulateInventory(Library.Store store)
-        {
-            using var context = new P0Context(_dbContextOptions);
-            var dbItems = context.Items
-                .Where(x => x.StoreId == store.Id)
-                .Include(x => x.Product)
-                .ToList();
-            foreach (var item in dbItems)
-            {
-                store.AddItem(item.Product.Name, (int)item.Quantity);
-            };
-        }
-        */
 
         public bool CustomerExists(string customerName, Library.Store store)
         {
