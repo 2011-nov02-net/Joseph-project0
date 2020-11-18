@@ -132,7 +132,7 @@ namespace Project0.Library
         /// if not, product is added to inventory with initial quantity
         /// from restock
         /// </summary>
-        public void Restock(Order restockOrder)
+        public void Restock(RestockOrder restockOrder)
         {
             foreach (Product orderItem in restockOrder.Selections)
             {

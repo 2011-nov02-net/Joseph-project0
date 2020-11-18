@@ -13,7 +13,7 @@ namespace Project0.Library
         public string Name { get; set; }
         public int Price { get; set; }
 
-        public int Id; //not used currently, name used as db identifier
+        public int Id{ get; set; } //not used currently, name used as db identifier
         private static int _Id = 1;
 
         private int _quantity;

@@ -8,11 +8,11 @@ namespace Project0.Library
     /// Provides data fields representing an order in
     /// the form of a list of Products
     /// </summary>
-    public class Order
+    public class Order : IOrder
     {
         public Store TargetStore { get; set;  }
         public Customer Orderer { get; set; }
-        public int OrderId;
+        public int OrderId { get; set; }
         private static int _orderId = 1;
 
         public DateTime Time { get; set; }
