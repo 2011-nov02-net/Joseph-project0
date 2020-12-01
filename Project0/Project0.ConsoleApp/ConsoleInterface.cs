@@ -41,7 +41,6 @@ namespace Project0.ConsoleApp
                     input = Console.ReadLine();
 
                     //present options to returning customer
-                    //if (input == Convert.ToString(customerId))
                     if (customerList.Exists(c => c.Id == Convert.ToInt32(input)))
                     {
                         Library.Customer logCustomer = customerList.Find(c => c.Id == Convert.ToInt32(input));
@@ -61,7 +60,6 @@ namespace Project0.ConsoleApp
                         {
                             //Create and execute a new order at a target store
                             //read target store, and selections from logged in customer, then creat this order in db
-                            //PrintOrderHistory(logCustomer.Id, storeList);
                             Library.Store storeChoice = ReadStoreChoice(storeList);
                             PrintStoreInventory(storeChoice);
                             List<Library.Product> selections = ReadSelections(storeChoice);
@@ -72,7 +70,6 @@ namespace Project0.ConsoleApp
 
                             //execute order in db and update target store, add customer to store if needed
                             storeChoice = p0Repo.FillOrderDb(storeChoice, newOrder);
-                            //PrintOrderHistory(logCustomer.Id, storeList); 
                             Console.WriteLine();
 
                         }
@@ -184,7 +181,7 @@ namespace Project0.ConsoleApp
                         Console.WriteLine();
                     }
                 }
-                //user quits, return current selectiuon list
+                //user quits, return current selection list
                 else if (input == "q")
                 {
                     break;
