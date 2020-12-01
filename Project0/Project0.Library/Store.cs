@@ -15,9 +15,9 @@ namespace Project0.Library
     /// Store handles the majority of the business logic, with the other classes primarily used to 
     /// provide data to be handled by store methods
     /// </remarks>
-    public class Store
+    public class Store : IStore
     {
-        public string Address { get;}
+        public string Address { get; }
         public string Name { get; }
 
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace Project0.Library
         public List<Product> Inventory { get; set; }
         public List<Customer> Customers { get; set; }
 
-        public Store( List<Product> initialInventory, string address,string name)
+        public Store(List<Product> initialInventory, string address, string name)
         {
             this.Address = address;
             this.Name = name;
@@ -36,7 +36,7 @@ namespace Project0.Library
             ++_Id;
 
         }
-        public Store( string address, string name)
+        public Store(string address, string name)
         {
             this.Address = address;
             this.Name = name;
@@ -69,11 +69,11 @@ namespace Project0.Library
         public void AddItem(string itemName, int quantity)
         {
             //TODO: ensure duplicates are not added
-            if( quantity >= 1000)
+            if (quantity >= 1000)
                 throw new InvalidOperationException($"{quantity} is too large a quantity.");
             else if (quantity < 1)
                 throw new InvalidOperationException($"{quantity} is not a valid quantity.");
-            else 
+            else
             {
                 Inventory.Add(new Product(itemName, quantity) { InStock = true });
             }
@@ -98,9 +98,9 @@ namespace Project0.Library
             //add new customer to customer list
             AddCustomer(order.Orderer);
             List<bool> orderResults = new List<bool>();
-            
 
-            foreach(Product orderItem in order.Selections)
+
+            foreach (Product orderItem in order.Selections)
             {
                 bool carryItem = this.Inventory.Exists(x => x.Name == orderItem.Name);
                 if (carryItem)

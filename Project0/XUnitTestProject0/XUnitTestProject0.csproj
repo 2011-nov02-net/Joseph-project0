@@ -13,6 +13,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    <PackageReference Include="Moq" Version="4.15.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Project0.ConsoleApp\Project0.ConsoleApp.csproj" />
+    <ProjectReference Include="..\Project0.Data\Project0.Data.csproj" />
     <ProjectReference Include="..\Project0.Library\Project0.Library.csproj" />
   </ItemGroup>
 

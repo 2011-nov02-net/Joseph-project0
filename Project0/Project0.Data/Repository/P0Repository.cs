@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Project0.Data
 {
-    public class P0Repository 
+    public class P0Repository : IP0Repository
     {
         //private readonly P0Context _dbContext;
         private readonly DbContextOptions<P0Context> _dbContextOptions;
@@ -24,7 +24,7 @@ namespace Project0.Data
             using var context = new P0Context(_dbContextOptions);
             bool exists = false;
 
-            var dbOrders= context.Orders
+            var dbOrders = context.Orders
                .Include(o => o.Customer)
                .ToList();
             foreach (var order in dbOrders)
@@ -61,9 +61,9 @@ namespace Project0.Data
             List<Library.Store> storeList = new List<Library.Store>();
 
             var dbStores = context.Stores
-                .Include(s=> s.Items)
-                    .ThenInclude(i=>i.Product)
-                .Include(s=> s.Orders)
+                .Include(s => s.Items)
+                    .ThenInclude(i => i.Product)
+                .Include(s => s.Orders)
                     .ThenInclude(o => o.Customer)
                 .ToList();
 
@@ -71,7 +71,7 @@ namespace Project0.Data
             foreach (var dbStore in dbStores)
             {
                 Library.Store appStore = new Library.Store(dbStore.Location, dbStore.Name);
-                foreach(var item in dbStore.Items)
+                foreach (var item in dbStore.Items)
                 {
                     appStore.AddItem(item.Product.Name, (int)item.Quantity);
                 }
@@ -103,25 +103,6 @@ namespace Project0.Data
             return storeList;
         }
 
-        public List<int> GetOrdersFromStore(Library.Store store, Library.Customer customer)
-        {
-            //TODO: Output a list of Order Ids from customer to this store
-            using var context = new P0Context(_dbContextOptions);
-            List<int> OrdIds = new List<int>();
-
-
-            return OrdIds;
-        }
-        public List<int> GetCustomerOrders(Library.Customer customer)
-        {
-            //TODO: Output a list of Order Ids from customer to all stores
-            using var context = new P0Context(_dbContextOptions);
-            List<int> OrdIds = new List<int>();
-
-
-            return OrdIds;
-        }
-
         /// <summary>
         /// Enter a new customer into db, and app
         /// </summary>
@@ -136,7 +117,7 @@ namespace Project0.Data
             using var context = new P0Context(_dbContextOptions);
 
             newCustomer.Id = context.StoreCustomers.OrderBy(x => x.Id).Last().Id + 1;
-            var dbCustomer = new StoreCustomer(){Name = customerName};
+            var dbCustomer = new StoreCustomer() { Name = customerName };
             context.Add(dbCustomer);
             context.SaveChanges();
         }
@@ -217,7 +198,7 @@ namespace Project0.Data
         }
 
         //returns an appOrder from the db
-        public Library.Order GetOrder(int orderId,Library.Store appStore,Library.Customer appCustomer)
+        public Library.Order GetOrder(int orderId, Library.Store appStore, Library.Customer appCustomer)
         {
             using var context = new P0Context(_dbContextOptions);
 
@@ -228,16 +209,16 @@ namespace Project0.Data
                 .Where(i => i.OrderId == orderId);
             foreach (var item in dbItems)
             {
-                if(selections.Count == 0)
+                if (selections.Count == 0)
                     selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
 
-                for(int i = 0; i < selections.Count; ++i)
+                for (int i = 0; i < selections.Count; ++i)
                 {
                     if (item.Product.Name != selections.ElementAt(i).Name)
                         selections.Add(new Library.Product(item.Product.Name, (int)item.Quantity));
                 }
             }
-                
+
             //create the order
             var dbOrder = context.Orders
                 .First(x => x.Id == orderId);
